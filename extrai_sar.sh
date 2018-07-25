@@ -1,17 +1,22 @@
 #!/bin/bash
-####################################################################
-# Script: extrai_sar.sh
-# Autor: Jefferson Romeiro
-# Data: 24/07/2018
-# v=1.0
-# Descrição: Fazer o parse de arquivos sar
-# var numero: Alterar a linha para o valor encontrado no cabeçalho
-# Modo de Execução: gawk -f parse_sar_cpu.awk arquivo_sar
-#####################################################################
+###############################################################################
+# Script: extrai_sar.sh                                                       #
+# Autor: Jefferson Romeiro                                                    #
+# Data: 25/07/2018                                                            #
+# v=1.0                                                                       #
+# Descrição: Fazer o parse de arquivos BINÁRIOS do sar no Linux               #
+#                                                                             #
+# O arquivo parse_sar.awk precisar estar na pasta $AWK_SCRIPT_DIR             #
+#                                                                             #
+# Alterar as variávels $CAMINHO_SAR, $DESTINO_ARQUIVOS e AWR_SCRIPT_DIR       #
+#                                                                             #
+# Modo de Execução: bash extrai_sar.sh  ou ./extrai_sar.sh                    #
+#	Informar uma das métricas solicitadas, utilizando apenas uma letra    #
+###############################################################################
 
 CAMINHO_SAR=/var/log/sysstat
-DESTINO_ARQUIVOS=/home/jefferson/teste_sar/log
-AWK_SCRIPT_DIR=/home/jefferson/teste_sar
+DESTINO_ARQUIVOS=/home/jefferson/parse_sar/log
+AWK_SCRIPT_DIR=/home/jefferson/parse_sar
 ARQUIVO_SAIDA=$DESTINO_ARQUIVOS/sar
 ARQUIVO_TEMPORARIO=$DESTINO_ARQUIVOS/arquivo.temp
 
@@ -64,6 +69,9 @@ ajusta_saida(){
         n)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "IFACE" > $ARQUIVO_TEMPORARIO
          echo "DATA;IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+        B)
+          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "pgsteal" > $ARQUIVO_TEMPORARIO
+         echo "DATA;pgpgin/s;pgpgout/s;fault/s;majflt/s;pgfree/s;pgscank/s;pgscand/s;pgsteal/s;%vmeff" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
    esac
 
 
@@ -88,12 +96,23 @@ extrai_metrica(){
 
 cd $DESTINO_ARQUIVOS
 
-read -p 'Informe a métrica:
-(CPU=u, MEM=r,MEM STATIS=M, DISCO=d, 
-I/0=b, PAGINACAO=B, RUN QUEUE=r, SWAP=S, 
-SWAP STATS=W, PROCESSOS=w, REDES=n)
+regex="\b[urMdbBqSWwn]\b"
+
+while true
+do
+
+read -p 'Informe uma letra que representa a métrica:
+(CPU=u, MEM=r,MEM STATIS=M, DISCO=d, I/0=b, PAGINACAO=B, RUN QUEUE=q, SWAP=S, SWAP STATS=W, PROCESSOS=w, REDES=n)
 => ' tipo_metrica
 
-extrai_metrica $tipo_metrica
-
+if [[ $tipo_metrica =~ $regex ]]
+   then 
+      extrai_metrica $tipo_metrica
+      exit;
+   else
+      echo ""
+      echo "Opção inválida, tente novamente"
+      echo ""	
+fi 
+done  
 exit

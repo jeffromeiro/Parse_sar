@@ -22,7 +22,7 @@
           print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"
       } else if (metrica == "r") {
           print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10";"$11";"
-      } else if (metrica == "d" || metrica == "n") {
+      } else if (metrica == "d" || metrica == "n" || metrica == "B") {
           print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10";"
       } else if (metrica == "b" || metrica == "S") {
           print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"
