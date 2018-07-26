@@ -43,14 +43,14 @@ ajusta_saida(){
    
    case $metrica in
 	u)
-          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -v "%idle" > $ARQUIVO_TEMPORARIO
-   	  echo "DATA;CPU;%user;%nice;%system;%iowait;%steal;%idle;" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "%idle" > $ARQUIVO_TEMPORARIO
+   	  echo "DATA;CPU;user;nice;system;iowait;steal;idle" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         r)
-          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -v "%memused" > $ARQUIVO_TEMPORARIO
-   	 echo "DATA;kbmemfree;kbavail;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "%memused" > $ARQUIVO_TEMPORARIO
+   	 echo "DATA;kbmemfree;kbavail;kbmemused;%memused;kbbuffers;kbcached;kbcommit;commit;kbactive;kbinact;kbdirty" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         d)
-          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -v "DEV" > $ARQUIVO_TEMPORARIO
-         echo "DATA;DEV;tps;rkB/s;wkB/s;areq-sz;aqu-sz;await;svctm;%util" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+          cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "DEV" > $ARQUIVO_TEMPORARIO
+         echo "DATA;DEV;tps;rkB/s;wkB/s;areq-sz;aqu-sz;await;svctm;util" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         b)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -v "Linux" |grep -v "rtps" > $ARQUIVO_TEMPORARIO
          echo "DATA;tps;rtps;wtps;bread/s;bwrtn/s" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
@@ -59,7 +59,7 @@ ajusta_saida(){
          echo "DATA;runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15;blocked" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         S)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -v "Linux" |grep -v "kbswpused" > $ARQUIVO_TEMPORARIO
-         echo "DATA;kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+         echo "DATA;kbswpfree;kbswpused;swpused;kbswpcad;swpcad" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         w)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "proc/s" > $ARQUIVO_TEMPORARIO
          echo "DATA;proc/s;cswch/s" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
@@ -68,10 +68,10 @@ ajusta_saida(){
          echo "DATA;pswpin/s;pswpout/s" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         n)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "IFACE" > $ARQUIVO_TEMPORARIO
-         echo "DATA;IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+         echo "DATA;IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;ifutil" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
         B)
           cat $ARQUIVO_SAIDA"_"$metrica.csv |grep -v ";;" |grep -iv "LINUX" |grep -v "pgsteal" > $ARQUIVO_TEMPORARIO
-         echo "DATA;pgpgin/s;pgpgout/s;fault/s;majflt/s;pgfree/s;pgscank/s;pgscand/s;pgsteal/s;%vmeff" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
+         echo "DATA;pgpgin/s;pgpgout/s;fault/s;majflt/s;pgfree/s;pgscank/s;pgscand/s;pgsteal/s;vmeff" > $ARQUIVO_SAIDA"_"$metrica.csv ;;
    esac
 
 
@@ -94,6 +94,10 @@ extrai_metrica(){
    ajusta_saida
 }
 
+if [ ! -d $DESTINO_ARQUIVOS ]
+then
+   mkdir $DESTINO_ARQUIVOS
+fi
 cd $DESTINO_ARQUIVOS
 
 regex="\b[urMdbBqSWwn]\b"

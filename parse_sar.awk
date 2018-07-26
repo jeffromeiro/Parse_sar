@@ -19,17 +19,17 @@
       mes=substr(data,4,2); 
       ano=substr(data,7,4); 
       if (metrica == "u") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"
+          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8
       } else if (metrica == "r") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10";"$11";"
+          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10";"$11
       } else if (metrica == "d" || metrica == "n" || metrica == "B") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10";"
+          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"$8";"$9";"$10
       } else if (metrica == "b" || metrica == "S") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"
+          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6
       } else if (metrica == "q") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7";"
+          print dia"/"mes"/"ano,$1";"$2";"$3";"$4";"$5";"$6";"$7
       } else if (metrica == "w" || metrica == "W") {
-          print dia"/"mes"/"ano,$1";"$2";"$3";"
+          print dia"/"mes"/"ano,$1";"$2";"$3
       }
    }
 }
